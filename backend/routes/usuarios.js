@@ -13,5 +13,23 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/:rol', async (req, res) => {
+  const rol = req.params.rol;
+  try {
+    const [rows] = await db.query(`
+      SELECT cedula_usuario, nombre, apellido 
+      FROM usuarios 
+      WHERE rol = ? 
+      AND cedula_usuario NOT IN ('0000000001', '0000000002', '0000000003')
+    `, [rol]);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al obtener usuarios por rol" });
+  }
+});
+
+
+
 
 export default router;

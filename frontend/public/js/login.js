@@ -17,12 +17,14 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     localStorage.setItem('cedula', cedula_usuario);
     localStorage.setItem('nombre', nombre);
 
-    if (rol === 'secretaria') {
-      window.location.href = "pages/secretarias.html";
-    } else if (rol === 'colector') {
-      window.location.href = "pages/colectoras.html";
+    if (cedula_usuario === '0000000001' || cedula_usuario === '0000000002' || cedula_usuario === '0000000003') {
+      window.location.href = 'encuestas.html';
+    } else if (rol === 'secretaria') {
+      window.location.href = 'pages/secretarias.html';
     } else if (rol === 'docente') {
-      window.location.href = "pages/docentes.html";
+      window.location.href = 'pages/docentes.html';
+    } else if (rol === 'colector') {
+      window.location.href = 'pages/colectoras.html';
     } else {
       alert("Rol no reconocido.");
     }
