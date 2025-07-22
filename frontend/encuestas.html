@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Encuesta de Atención</title>
+</head>
+<body>
+  <h2>Encuesta de Atención</h2>
+
+  <form id="encuestaForm">
+    <label>¿Quién lo atendió?</label><br>
+    <select id="atendido_por" required></select><br><br>
+
+    <label>¿Cuánto tiempo tuvo que esperar para ser atendido?</label><br>
+    <input type="radio" name="puntualidad" value="1"> Muy largo
+    <input type="radio" name="puntualidad" value="2"> Largo
+    <input type="radio" name="puntualidad" value="3"> Adecuado
+    <input type="radio" name="puntualidad" value="4"> Rápido
+    <input type="radio" name="puntualidad" value="5"> Inmediato<br><br>
+
+    <label>¿Cómo calificaría el trato recibido?</label><br>
+    <input type="radio" name="trato" value="1"> Muy malo
+    <input type="radio" name="trato" value="2"> Malo
+    <input type="radio" name="trato" value="3"> Aceptable
+    <input type="radio" name="trato" value="4"> Bueno
+    <input type="radio" name="trato" value="5"> Excelente<br><br>
+
+    <label>¿Se resolvió su consulta o problema en el primer intento?</label><br>
+    <input type="radio" name="resolucion" value="1"> No
+    <input type="radio" name="resolucion" value="2"> Parcialmente
+    <input type="radio" name="resolucion" value="3"> Neutral
+    <input type="radio" name="resolucion" value="4"> Sí
+    <input type="radio" name="resolucion" value="5"> Totalmente<br><br>
+
+    <label>Motivo de visita:</label><br>
+    <select id="motivo">
+      <option value="cobro">Cobro</option>
+      <option value="consulta">Consulta</option>
+      <option value="otro">Otro</option>
+    </select><br><br>
+
+    <label>¿Qué sugerencias tiene para mejorar el servicio recibido?</label><br>
+    <textarea id="comentario" placeholder="Escriba su comentario aquí..."></textarea><br><br>
+
+    <button type="submit">Enviar Encuesta</button>
+  </form>
+
+  <script src="public/js/encuesta.js"></script>
+</body>
+</html>
