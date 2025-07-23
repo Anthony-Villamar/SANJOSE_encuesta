@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const form = document.getElementById('encuestaForm');
-  const cedula = localStorage.getItem('cedula');
-  const rol = localStorage.getItem('rol');
+  const cedula = sessionStorage.getItem('cedula');
+  const rol = sessionStorage.getItem('rol');
   const atendidoSelect = document.getElementById('atendido_por');
 
   if (!cedula || !rol) {

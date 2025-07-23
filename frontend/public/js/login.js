@@ -13,9 +13,9 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
   if (result.success) {
     const { rol, cedula_usuario, nombre } = result.usuario;
-    localStorage.setItem('rol', rol);
-    localStorage.setItem('cedula', cedula_usuario);
-    localStorage.setItem('nombre', nombre);
+    sessionStorage.setItem('rol', rol);
+    sessionStorage.setItem('cedula', cedula_usuario);
+    sessionStorage.setItem('nombre', nombre);
 
     if (cedula_usuario === '0000000001' || cedula_usuario === '0000000002' || cedula_usuario === '0000000003') {
       window.location.href = 'encuestas.html';
