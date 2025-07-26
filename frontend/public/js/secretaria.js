@@ -112,28 +112,31 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // DETALLE DIARIO + GRÁFICO DE PASTEL
+  document.getElementById('filtrarBtn').addEventListener('click', async () => {
+  const fechaSeleccionada = document.getElementById('fechaFiltro').value;
+  if (!fechaSeleccionada) return alert("Selecciona una fecha");
+
   try {
-    const diarioRes = await fetch(`http://localhost:3001/api/estadisticas/detalle/diario/${cedula}`);
-    const dias = await diarioRes.json();
+    const res = await fetch(`http://localhost:3001/api/estadisticas/detalle/diario/${cedula}`);
+    const dias = await res.json();
+
+    const filtrado = dias.find(d => new Date(d.fecha).toISOString().slice(0, 10) === fechaSeleccionada);
 
     const container = document.getElementById('estadisticasDiarias');
     container.innerHTML = '';
 
-    if (dias.length > 0) {
-      const ultimoDia = dias[dias.length - 1];
-      const fechaLocal = new Date(ultimoDia.fecha).toLocaleDateString('es-EC', { timeZone: 'America/Guayaquil' });
-
+    if (filtrado) {
       const p = document.createElement('p');
       p.innerHTML = `
-        <strong>${fechaLocal}:</strong>
-        Puntualidad: ${ultimoDia.promedio_puntualidad} |
-        Trato: ${ultimoDia.promedio_trato} |
-        Resolución: ${ultimoDia.promedio_resolucion}
+        <strong>${fechaSeleccionada}:</strong>
+        Puntualidad: ${filtrado.promedio_puntualidad} |
+        Trato: ${filtrado.promedio_trato} |
+        Resolución: ${filtrado.promedio_resolucion}
       `;
       container.appendChild(p);
 
       const ctxPastel = document.getElementById('graficoPastel').getContext('2d');
-
+      // Actualiza gráfico
       new Chart(ctxPastel, {
         type: 'polarArea',
         data: {
@@ -141,9 +144,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           datasets: [{
             label: 'Promedio diario',
             data: [
-              ultimoDia.promedio_puntualidad || 0,
-              ultimoDia.promedio_trato || 0,
-              ultimoDia.promedio_resolucion || 0
+              filtrado.promedio_puntualidad || 0,
+              filtrado.promedio_trato || 0,
+              filtrado.promedio_resolucion || 0
             ],
             backgroundColor: [
               'rgba(255, 99, 132, 0.6)',
@@ -159,20 +162,85 @@ document.addEventListener('DOMContentLoaded', async () => {
           }]
         },
         options: {
-          plugins: {
-            legend: {
-              position: 'top'
+          scales: {
+            r: {
+              suggestedMin: 0,
+              suggestedMax: 5
             }
           }
         }
       });
     } else {
-      container.innerHTML = `<p>No hay datos de hoy.</p>`;
+      container.innerHTML = `<p>No hay datos para esa fecha.</p>`;
     }
   } catch (err) {
     console.error(err);
-    alert("Error al obtener estadísticas diarias.");
+    alert("Error al obtener estadísticas filtradas.");
   }
+});
+
+  // try {
+  //   const diarioRes = await fetch(`http://localhost:3001/api/estadisticas/detalle/diario/${cedula}`);
+  //   const dias = await diarioRes.json();
+
+  //   const container = document.getElementById('estadisticasDiarias');
+  //   container.innerHTML = '';
+
+  //   if (dias.length > 0) {
+  //     const ultimoDia = dias[0];
+  //     const fechaLocal = new Date(ultimoDia.fecha).toLocaleDateString('es-EC', { timeZone: 'America/Guayaquil' });
+
+  //     const p = document.createElement('p');
+  //     p.innerHTML = `
+  //       <strong>${fechaLocal}:</strong>
+  //       Puntualidad: ${ultimoDia.promedio_puntualidad} |
+  //       Trato: ${ultimoDia.promedio_trato} |
+  //       Resolución: ${ultimoDia.promedio_resolucion}
+  //     `;
+  //     container.appendChild(p);
+
+  //     const ctxPastel = document.getElementById('graficoPastel').getContext('2d');
+
+  //     new Chart(ctxPastel, {
+  //       type: 'polarArea',
+  //       data: {
+  //         labels: ['Puntualidad', 'Trato', 'Resolución'],
+  //         datasets: [{
+  //           label: 'Promedio diario',
+  //           data: [
+  //             ultimoDia.promedio_puntualidad || 0,
+  //             ultimoDia.promedio_trato || 0,
+  //             ultimoDia.promedio_resolucion || 0
+  //           ],
+  //           backgroundColor: [
+  //             'rgba(255, 99, 132, 0.6)',
+  //             'rgba(54, 162, 235, 0.6)',
+  //             'rgba(255, 206, 86, 0.6)'
+  //           ],
+  //           borderColor: [
+  //             'rgb(255, 99, 132)',
+  //             'rgb(54, 162, 235)',
+  //             'rgb(255, 206, 86)'
+  //           ],
+  //           borderWidth: 1
+  //         }]
+  //       },
+  //       options: {
+          
+  //         plugins: {
+  //           legend: {
+  //             position: 'top'
+  //           }
+  //         }
+  //       }
+  //     });
+  //   } else {
+  //     container.innerHTML = `<p>No hay datos de hoy.</p>`;
+  //   }
+  // } catch (err) {
+  //   console.error(err);
+  //   alert("Error al obtener estadísticas diarias.");
+  // }
 });
 
 
