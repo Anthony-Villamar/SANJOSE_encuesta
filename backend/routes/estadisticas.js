@@ -47,14 +47,18 @@ router.get('/detalle/:cedula', async (req, res) => {
 router.get('/:cedula', async (req, res) => {
   try {
     const sql = `
-      SELECT u.nombre, 
-             ROUND(AVG((IFNULL(puntualidad,0)+IFNULL(trato,0)+IFNULL(resolucion,0))/3),2) AS promedio
+      SELECT 
+        u.nombre,
+        ROUND(AVG(c.puntualidad), 2) AS promedio_puntualidad,
+        ROUND(AVG(c.trato), 2) AS promedio_trato,
+        ROUND(AVG(c.resolucion), 2) AS promedio_resolucion,
+        ROUND(AVG((IFNULL(c.puntualidad,0)+IFNULL(c.trato,0)+IFNULL(c.resolucion,0))/3),2) AS promedio
       FROM calificaciones c
       JOIN usuarios u ON c.atendido_por = u.cedula_usuario
       WHERE TIME(fecha) BETWEEN '07:00:00' AND '14:30:00'
       GROUP BY atendido_por
       ORDER BY promedio DESC
-      LIMIT 3
+      LIMIT 3;
     `;
     const [rows] = await db.query(sql);
     res.json(rows);

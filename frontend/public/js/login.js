@@ -1,12 +1,29 @@
+// Función para mostrar/ocultar contraseña
+document.getElementById('togglePassword').addEventListener('click', function() {
+  const passwordInput = document.getElementById('contrasena');
+  const eyeIcon = document.getElementById('eyeIcon');
+  
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    eyeIcon.classList.remove('bi-eye');
+    eyeIcon.classList.add('bi-eye-slash');
+  } else {
+    passwordInput.type = 'password';
+    eyeIcon.classList.remove('bi-eye-slash');
+    eyeIcon.classList.add('bi-eye');
+  }
+});
+
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const cedula = document.getElementById('cedula').value.trim();
+  const usuario = document.getElementById('usuario').value.trim();
+  const contrasena = document.getElementById('contrasena').value.trim();
 
-  const res = await fetch('http://localhost:3000/api/login', {
+  const res = await fetch('http://localhost:3001/api/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ cedula })
+    body: JSON.stringify({ usuario, contrasena })
   });
 
   const result = await res.json();
@@ -29,6 +46,6 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
       alert("Rol no reconocido.");
     }
   } else {
-    alert("Cédula incorrecta.");
+    alert("Usuario o contraseña incorrectos.");
   }
 });

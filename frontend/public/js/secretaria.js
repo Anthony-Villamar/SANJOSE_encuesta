@@ -5,13 +5,62 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // TOP 3
   try {
-    const res = await fetch(`http://localhost:3000/api/estadisticas/${cedula}`);
+    const res = await fetch(`http://localhost:3001/api/estadisticas/${cedula}`);
     const top = await res.json();
-    const lista = document.getElementById('topAtenciones');
+    const radarContainer = document.getElementById('topAtenciones');
+    const lista = document.getElementById('topAtenciones1');
     top.forEach((entry, index) => {
       const li = document.createElement('li');
       li.textContent = `${index + 1}. ${entry.nombre} - Promedio: ${entry.promedio}`;
       lista.appendChild(li);
+    });
+
+    radarContainer.innerHTML = '<canvas id="graficoTop3Radar"></canvas>';
+
+    const radarCtx = document.getElementById('graficoTop3Radar').getContext('2d');
+
+    const colores = [
+      { fondo: 'rgba(255, 99, 132, 0.2)', borde: 'rgb(255, 99, 132)' },
+      { fondo: 'rgba(54, 162, 235, 0.2)', borde: 'rgb(54, 162, 235)' },
+      { fondo: 'rgba(255, 206, 86, 0.2)', borde: 'rgb(255, 206, 86)' }
+    ];
+
+    const datasets = top.map((entry, index) => ({
+      label: `${entry.nombre}`,
+      data: [
+        entry.promedio_puntualidad || 0,
+        entry.promedio_trato || 0,
+        entry.promedio_resolucion || 0
+      ],
+      fill: true,
+      backgroundColor: colores[index].fondo,
+      borderColor: colores[index].borde,
+      pointBackgroundColor: colores[index].borde,
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: colores[index].borde
+    }));
+
+    new Chart(radarCtx, {
+      type: 'radar',
+      data: {
+        labels: ['Puntualidad', 'Trato', 'Resolución'],
+        datasets: datasets
+      },
+      options: {
+        elements: {
+          line: { borderWidth: 3 }
+        },
+        plugins: {
+          title: {
+            display: true,
+            text: 'Top 3 Mejores Calificados'
+          },
+          legend: {
+            position: 'top'
+          }
+        }
+      }
     });
   } catch (err) {
     console.error(err);
@@ -20,7 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // DETALLE GENERAL + GRÁFICO DE BARRAS
   try {
-    const detalleRes = await fetch(`http://localhost:3000/api/estadisticas/detalle/${cedula}`);
+    const detalleRes = await fetch(`http://localhost:3001/api/estadisticas/detalle/${cedula}`);
     const detalle = await detalleRes.json();
 
     const detalleDiv = document.getElementById('detalleUsuario');
@@ -32,7 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const ctxGeneral = document.getElementById('graficoGeneral').getContext('2d');
     new Chart(ctxGeneral, {
-      type: 'bar',
+      type: 'doughnut',
       data: {
         labels: ['Puntualidad', 'Trato', 'Resolución'],
         datasets: [{
@@ -46,8 +95,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }]
       },
       options: {
-        scales: {
-          y: { beginAtZero: true, max: 5 }
+        animations: {
+          tension: {
+            duration: 5000,
+            easing: 'easeInSine',
+            from: 1.5,
+            to: 0,
+            loop: true
+          }
         }
       }
     });
@@ -58,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // DETALLE DIARIO + GRÁFICO DE PASTEL
   try {
-    const diarioRes = await fetch(`http://localhost:3000/api/estadisticas/detalle/diario/${cedula}`);
+    const diarioRes = await fetch(`http://localhost:3001/api/estadisticas/detalle/diario/${cedula}`);
     const dias = await diarioRes.json();
 
     const container = document.getElementById('estadisticasDiarias');
@@ -78,19 +133,37 @@ document.addEventListener('DOMContentLoaded', async () => {
       container.appendChild(p);
 
       const ctxPastel = document.getElementById('graficoPastel').getContext('2d');
+
       new Chart(ctxPastel, {
-        type: 'pie',
+        type: 'polarArea',
         data: {
           labels: ['Puntualidad', 'Trato', 'Resolución'],
           datasets: [{
-            label: 'Promedio del día',
+            label: 'Promedio diario',
             data: [
               ultimoDia.promedio_puntualidad || 0,
               ultimoDia.promedio_trato || 0,
               ultimoDia.promedio_resolucion || 0
             ],
-            backgroundColor: ['#0d6efd', '#198754', '#ffc107']
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.6)',
+              'rgba(54, 162, 235, 0.6)',
+              'rgba(255, 206, 86, 0.6)'
+            ],
+            borderColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+              'rgb(255, 206, 86)'
+            ],
+            borderWidth: 1
           }]
+        },
+        options: {
+          plugins: {
+            legend: {
+              position: 'top'
+            }
+          }
         }
       });
     } else {
@@ -101,3 +174,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     alert("Error al obtener estadísticas diarias.");
   }
 });
+
+
