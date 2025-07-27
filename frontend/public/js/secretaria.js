@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         datasets: datasets
       },
       options: {
-        scales:{r:{min:0, max:5}},
         elements: {
           line: { borderWidth: 1 }
         },
@@ -63,36 +62,87 @@ document.addEventListener('DOMContentLoaded', async () => {
           legend: {
             position: 'top'
           }
-        }
-      },
+        },
         scales: {
           r: {
+            min: 0,
+            max: 5,
+            stepSize: 1,
             angleLines: {
-              color: 'rgba(0, 0, 0, 0.6)', // Líneas desde el centro (puedes usar 'black' o '#000')
+              color: 'rgba(0, 0, 0, 0.6)',
               lineWidth: 1.5
             },
             grid: {
-              color: 'rgba(0, 0, 0, 0.3)', // Líneas circulares (puedes aumentar opacidad)
+              color: 'rgba(0, 0, 0, 0.3)',
               lineWidth: 1.2
             },
             pointLabels: {
-              color: '#000', // Letras de 'Puntualidad', 'Trato', etc.
+              color: '#000',
               font: {
                 size: 14,
                 weight: 'bold'
               }
             },
             ticks: {
-              color: '#000', // Números de las escalas (1, 2, 3, ...)
+              color: '#000',
               backdropColor: 'transparent',
               font: {
                 size: 12
-              },
-              stepSize: 1
+              }
             }
           }
         }
+      }
     });
+    // new Chart(radarCtx, {
+    //   type: 'radar',
+    //   data: {
+    //     labels: ['Puntualidad', 'Trato', 'Resolución'],
+    //     datasets: datasets
+    //   },
+    //   options: {
+    //     scales:{r:{min:0, max:5}},
+    //     elements: {
+    //       line: { borderWidth: 1 }
+    //     },
+    //     plugins: {
+    //       title: {
+    //         display: true,
+    //         text: 'Top 3 Mejores Calificados'
+    //       },
+    //       legend: {
+    //         position: 'top'
+    //       }
+    //     }
+    //   },
+    //     scales: {
+    //       r: {
+    //         angleLines: {
+    //           color: 'rgba(0, 0, 0, 0.6)', // Líneas desde el centro (puedes usar 'black' o '#000')
+    //           lineWidth: 1.5
+    //         },
+    //         grid: {
+    //           color: 'rgba(0, 0, 0, 0.3)', // Líneas circulares (puedes aumentar opacidad)
+    //           lineWidth: 1.2
+    //         },
+    //         pointLabels: {
+    //           color: '#000', // Letras de 'Puntualidad', 'Trato', etc.
+    //           font: {
+    //             size: 14,
+    //             weight: 'bold'
+    //           }
+    //         },
+    //         ticks: {
+    //           color: '#000', // Números de las escalas (1, 2, 3, ...)
+    //           backdropColor: 'transparent',
+    //           font: {
+    //             size: 12
+    //           },
+    //           stepSize: 1
+    //         }
+    //       }
+    //     }
+    // });
   } catch (err) {
     console.error(err);
     alert("Error al obtener estadísticas TOP.");
