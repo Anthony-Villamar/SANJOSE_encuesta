@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         datasets: datasets
       },
       options: {
-        scales:{min:0, max:5},
+        scales:{r:{min:0, max:5}},
         elements: {
           line: { borderWidth: 1 }
         },
