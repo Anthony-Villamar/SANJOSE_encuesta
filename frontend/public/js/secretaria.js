@@ -64,29 +64,30 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         }
       },
-      r: {
-        min: 0,
-        max: 5,
-        angleLines: {
-          color: 'rgba(0, 0, 0, 0.6)', // Líneas desde el centro (puedes usar 'black' o '#000')
-          lineWidth: 1.5
-        },
-        grid: {
-          color: 'rgba(0, 0, 0, 0.3)', // Líneas circulares (puedes aumentar opacidad)
-          lineWidth: 1.2
-        },
-        pointLabels: {
-          color: '#000', // Letras de 'Puntualidad', 'Trato', etc.
-          font: {
-            size: 14,
-            weight: 'bold'
-          }
-        },
-        ticks: {
-          color: '#000', // Números de las escalas (1, 2, 3, ...)
-          backdropColor: 'transparent',
-          font: {
-            size: 12
+      scale: {
+        r: {
+          angleLines: {
+            color: 'rgba(0, 0, 0, 0.6)', // Líneas desde el centro (puedes usar 'black' o '#000')
+            lineWidth: 1.5
+          },
+          grid: {
+            color: 'rgba(0, 0, 0, 0.3)', // Líneas circulares (puedes aumentar opacidad)
+            lineWidth: 1.2
+          },
+          pointLabels: {
+            color: '#000', // Letras de 'Puntualidad', 'Trato', etc.
+            font: {
+              size: 14,
+              weight: 'bold'
+            }
+          },
+          ticks: {
+            color: '#000', // Números de las escalas (1, 2, 3, ...)
+            backdropColor: 'transparent',
+            font: {
+              size: 12
+            },
+            stepSize: 1
           }
         }
       }
