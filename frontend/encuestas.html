@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <title>Encuesta de Atención</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
 
   <!-- NAVBAR -->
@@ -78,12 +80,18 @@
 
       <!-- Motivo -->
       <div class="mb-3">
-        <label class="form-label">Motivo de visita:</label>
+        <label>Motivo de visita:</label><br>
         <select id="motivo" class="form-select" required>
-          <option value="cobro">Cobro</option>
-          <option value="consulta">Consulta</option>
-          <option value="otro">Otro</option>
+          <option value="Cancelar pensiones">Cancelar pensiones</option>
+          <option value="Consulta sobre deuda pendiente">Consulta sobre deuda pendiente</option>
+          <option value="Ayuda para subir comprobante a la plataforma de pago">Ayuda para subir comprobante a la
+            plataforma de pago</option>
+          <option value="Soporte para plataformas bloqueadas">Soporte para plataformas bloqueadas</option>
+          <option value="Consulta sobre curso vacacional San José">Consulta sobre curso vacacional San José</option>
+          <option value="Consulta sobre valores ofrecidos por la unidad educativa">Consulta sobre valores ofrecidos por
+            la unidad educativa</option>
         </select>
+
       </div>
 
       <!-- Comentario -->
@@ -107,4 +115,5 @@
   </script>
   <script src="public/js/encuesta.js"></script>
 </body>
+
 </html>
