@@ -5,20 +5,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // TOP 3
   try {
-  const res = await fetch(`http://localhost:3001/api/estadisticas/${cedula}`);
-  const top = await res.json();
+    const res = await fetch(`http://localhost:3001/api/estadisticas/${cedula}`);
+    const top = await res.json();
 
-  const contenedor = document.getElementById('topAtenciones1');
-  contenedor.innerHTML = ''; // Limpiar antes de insertar
+    const contenedor = document.getElementById('topAtenciones1');
+    contenedor.innerHTML = ''; // Limpiar antes de insertar
 
-  top.forEach((entry, index) => {
-    const p = document.createElement('p');
-    p.innerHTML = `<strong>${index + 1}. ${entry.nombre}</strong> - Promedio: ${entry.promedio}`;
-    contenedor.appendChild(p);
-  });
+    top.forEach((entry, index) => {
+      const p = document.createElement('p');
+      p.innerHTML = `<strong>${index + 1}. ${entry.nombre}</strong> - Promedio: ${entry.promedio}`;
+      contenedor.appendChild(p);
+    });
 
-  const radarContainer = document.getElementById('topAtenciones');
-  radarContainer.innerHTML = '<canvas id="graficoTop3Radar"></canvas>';
+    const radarContainer = document.getElementById('topAtenciones');
+    radarContainer.innerHTML = '<canvas id="graficoTop3Radar"></canvas>';
 
     const radarCtx = document.getElementById('graficoTop3Radar').getContext('2d');
 
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       },
       options: {
         elements: {
-          line: { borderWidth: 1   }
+          line: { borderWidth: 1 }
         },
         plugins: {
           title: {
@@ -65,29 +65,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       },
       r: {
-      angleLines: {
-        color: 'rgba(0, 0, 0, 0.6)', // Líneas desde el centro (puedes usar 'black' o '#000')
-        lineWidth: 1.5
-      },
-      grid: {
-        color: 'rgba(0, 0, 0, 0.3)', // Líneas circulares (puedes aumentar opacidad)
-        lineWidth: 1.2
-      },
-      pointLabels: {
-        color: '#000', // Letras de 'Puntualidad', 'Trato', etc.
-        font: {
-          size: 14,
-          weight: 'bold'
-        }
-      },
-      ticks: {
-        color: '#000', // Números de las escalas (1, 2, 3, ...)
-        backdropColor: 'transparent',
-        font: {
-          size: 12
+        min: 0,
+        max: 5,
+        angleLines: {
+          color: 'rgba(0, 0, 0, 0.6)', // Líneas desde el centro (puedes usar 'black' o '#000')
+          lineWidth: 1.5
+        },
+        grid: {
+          color: 'rgba(0, 0, 0, 0.3)', // Líneas circulares (puedes aumentar opacidad)
+          lineWidth: 1.2
+        },
+        pointLabels: {
+          color: '#000', // Letras de 'Puntualidad', 'Trato', etc.
+          font: {
+            size: 14,
+            weight: 'bold'
+          }
+        },
+        ticks: {
+          color: '#000', // Números de las escalas (1, 2, 3, ...)
+          backdropColor: 'transparent',
+          font: {
+            size: 12
+          }
         }
       }
-    }
     });
   } catch (err) {
     console.error(err);
