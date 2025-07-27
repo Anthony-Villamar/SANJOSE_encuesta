@@ -63,7 +63,34 @@ document.addEventListener('DOMContentLoaded', async () => {
             position: 'top'
           }
         }
-      }
+      },
+        scales: {
+          r: {
+            angleLines: {
+              color: 'rgba(0, 0, 0, 0.6)', // Líneas desde el centro (puedes usar 'black' o '#000')
+              lineWidth: 1.5
+            },
+            grid: {
+              color: 'rgba(0, 0, 0, 0.3)', // Líneas circulares (puedes aumentar opacidad)
+              lineWidth: 1.2
+            },
+            pointLabels: {
+              color: '#000', // Letras de 'Puntualidad', 'Trato', etc.
+              font: {
+                size: 14,
+                weight: 'bold'
+              }
+            },
+            ticks: {
+              color: '#000', // Números de las escalas (1, 2, 3, ...)
+              backdropColor: 'transparent',
+              font: {
+                size: 12
+              },
+              stepSize: 1
+            }
+          }
+        }
     });
   } catch (err) {
     console.error(err);
