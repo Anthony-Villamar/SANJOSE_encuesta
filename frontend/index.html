@@ -3,36 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <title>Iniciar Sesión</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    #togglePassword {
-      cursor: pointer;
-    }
-    .input-group {
-      position: relative;
-    }
-  </style>
+  <link rel="stylesheet" href="public/styles/estilos.css">
+  <script src="https://kit.fontawesome.com/d26ee513d0.js" crossorigin="anonymous"></script>
 </head>
-<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+<body>
 
-  <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
-    <h2 class="text-center mb-4">Inicio de Sesión</h2>
+  <div class="login-container">
+    <h2>Inicio de Sesión</h2>
     <form id="loginForm">
-      <div class="mb-3">
-        <label for="usuario" class="form-label">Usuario</label>
-        <input type="text" id="usuario" class="form-control" required>
+      <div id="usuario-container">
+        <label for="usuario" >Usuario</label>
+        <input type="text" id="usuario"  required>
       </div>
-      <div class="mb-3">
-        <label for="contrasena" class="form-label">Contraseña</label>
-        <div class="input-group">
-          <input type="password" id="contrasena" class="form-control" required>
-          <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-            <i class="bi bi-eye" id="eyeIcon"></i>
+      <div id="contrasena-container">
+        <label for="contrasena">Contraseña</label>
+        <div  class="input-group">
+          <input type="password" id="contrasena" required>
+          <button class="button_eye" type="button"  id="togglePassword">
+            <i class="fa-solid fa-eye" id="eyeIcon"></i>
           </button>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+      <button type="submit" id="login">Ingresar</button>
     </form>
   </div>
 
