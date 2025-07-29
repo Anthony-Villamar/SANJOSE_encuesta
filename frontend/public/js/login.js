@@ -42,7 +42,9 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
       window.location.href = 'pages/docentes.html';
     } else if (rol === 'colector') {
       window.location.href = 'pages/colectoras.html';
-    } else {
+    } else if (rol === 'administrador') {
+      window.location.href = 'pages/administrador.html';
+    }else {
       alert("Rol no reconocido.");
     }
   } else {
