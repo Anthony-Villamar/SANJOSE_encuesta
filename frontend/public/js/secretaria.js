@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // TOP 3
   try {
-    const res = await fetch(`http://localhost:3001/api/estadisticas/${cedula}`);
+    const res = await fetch(`https://ue-san-jose.onrender.com/api/estadisticas/${cedula}`);
     const top = await res.json();
 
     const contenedor = document.getElementById('topAtenciones1');
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // DETALLE GENERAL + GRÁFICO DE DONA
   try {
-    const detalleRes = await fetch(`http://localhost:3001/api/estadisticas/detalle/${cedula}`);
+    const detalleRes = await fetch(`https://ue-san-jose.onrender.com/api/estadisticas/detalle/${cedula}`);
     const detalle = await detalleRes.json();
 
     const detalleDiv = document.getElementById('detalleUsuario');
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!fechaSeleccionada) return;
 
     try {
-      const res = await fetch(`http://localhost:3001/api/estadisticas/detalle/diario/${cedula}`);
+      const res = await fetch(`https://ue-san-jose.onrender.com/api/estadisticas/detalle/diario/${cedula}`);
       const dias = await res.json();
 
       const filtrado = dias.find(d => d.fecha.slice(0, 10) === fechaSeleccionada);
@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     fechaInput.value = hoy;
 
     try {
-      const res = await fetch(`http://localhost:3001/api/estadisticas/detalle/diario/${cedula}`);
+      const res = await fetch(`https://ue-san-jose.onrender.com/api/estadisticas/detalle/diario/${cedula}`);
       const dias = await res.json();
 
       // Intenta encontrar datos para hoy
