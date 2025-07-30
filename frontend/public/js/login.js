@@ -20,7 +20,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   const usuario = document.getElementById('usuario').value.trim();
   const contrasena = document.getElementById('contrasena').value.trim();
 
-  const res = await fetch('https://ue-san-jose.onrender.com/api/login', {
+  const res = await fetch('https://san-jose.onrender.com/api/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ usuario, contrasena })
