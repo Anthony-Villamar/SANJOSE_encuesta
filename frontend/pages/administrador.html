@@ -7,23 +7,23 @@
 
 </head>
 <body class="bg-light">
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Secretaria</a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link active" href="#">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-warning" href="../index.html" onclick="logout()">Cerrar sesión</a>
-          </li>
-        </ul>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Secretaria</a>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-warning" href="../index.html" onclick="logout()">Cerrar sesión</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
-    </header>
+    </nav>
+  </header>
 
  <main>
   <div class="container">
@@ -32,40 +32,40 @@
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="cedula" class="form-label">Cédula</label>
-          <input type="text" id="cedula" class="form-control" required>
+          <input type="text" id="cedula" class="form-control" maxlength="10" required>
         </div>
         <div class="col-md-6">
           <label for="nombre" class="form-label">Nombre</label>
-          <input type="text" id="nombre" class="form-control" required>
+          <input type="text" id="nombre" class="form-control" maxlength="25" required>
         </div>
       </div>
 
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="apellido" class="form-label">Apellido</label>
-          <input type="text" id="apellido" class="form-control" required>
+          <input type="text" id="apellido" class="form-control" maxlength="25" required>
         </div>
         <div class="col-md-6">
           <label for="correo" class="form-label">Correo</label>
-          <input type="email" id="correo" class="form-control" required>
+          <input type="email" id="correo" class="form-control" maxlength="50" required>
         </div>
       </div>
 
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="telefono" class="form-label">Teléfono</label>
-          <input type="text" id="telefono" class="form-control" required>
+          <input type="text" id="telefono" class="form-control"  maxlength="10" required>
         </div>
         <div class="col-md-6">
           <label for="usuarioNuevo" class="form-label">Usuario</label>
-          <input type="text" id="usuarioNuevo" class="form-control" required>
+          <input type="text" id="usuarioNuevo" class="form-control" maxlength="20" required>
         </div>
       </div>
 
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="contrasenaNuevo" class="form-label">Contraseña</label>
-          <input type="text" id="contrasenaNuevo" class="form-control" required>
+          <input type="text" id="contrasenaNuevo" class="form-control" maxlength="20" required>
         </div>
         <div class="col-md-6">
           <label for="rol" class="form-label">Rol</label>
@@ -88,29 +88,29 @@
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="cedulaActualizar" class="form-label">Cédula del usuario a actualizar</label>
-          <input type="text" id="cedulaActualizar" class="form-control" required>
+          <input type="text" id="cedulaActualizar" class="form-control" maxlength="10" required>
         </div>
         <div class="col-md-6">
           <label for="nombreActualizar" class="form-label">Nuevo Nombre</label>
-          <input type="text" id="nombreActualizar" class="form-control">
+          <input type="text" id="nombreActualizar" class="form-control" maxlength="25">
         </div>
       </div>
 
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="apellidoActualizar" class="form-label">Nuevo Apellido</label>
-          <input type="text" id="apellidoActualizar" class="form-control">
+          <input type="text" id="apellidoActualizar" class="form-control" maxlength="25">
         </div>
         <div class="col-md-6">
           <label for="correoActualizar" class="form-label">Nuevo Correo</label>
-          <input type="email" id="correoActualizar" class="form-control">
+          <input type="email" id="correoActualizar" class="form-control" maxlength="50">
         </div>
       </div>
 
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="telefonoActualizar" class="form-label">Nuevo Teléfono</label>
-          <input type="text" id="telefonoActualizar" class="form-control">
+          <input type="text" id="telefonoActualizar" class="form-control" maxlength="10">
         </div>
         <div class="col-md-6">
           <label for="rolActualizar" class="form-label">Nuevo Rol</label>
