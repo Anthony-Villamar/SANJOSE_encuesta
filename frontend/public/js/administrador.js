@@ -17,7 +17,7 @@ document.getElementById('registroForm').addEventListener('submit', async (e) => 
   }
 
   try {
-    const res = await fetch('http://localhost:3001/api/usuarios/registrar', {
+    const res = await fetch('https://san-jose.onrender.com/api/usuarios/registrar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -75,7 +75,7 @@ document.getElementById('actualizarForm').addEventListener('submit', async (e) =
   }
 
   try {
-    const res = await fetch(`http://localhost:3001/api/usuarios/${cedula}`, {
+    const res = await fetch(`https://san-jose.onrender.com/api/usuarios/${cedula}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(datosActualizar)
@@ -101,7 +101,7 @@ document.getElementById('cedulaActualizar').addEventListener('input', async (e) 
   // Si tiene 10 dígitos (o puedes ajustar a longitud mínima)
   if (cedula.length >= 10) {
     try {
-      const res = await fetch(`http://localhost:3001/api/usuarios/buscar/${cedula}`);
+      const res = await fetch(`https://san-jose.onrender.com/api/usuarios/buscar/${cedula}`);
       const data = await res.json();
 
       if (res.ok) {
