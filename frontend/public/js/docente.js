@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // TOP 3
   try {
-    const res = await fetch(`http://localhost:3001/api/estadisticas/${cedula}`);
+    const res = await fetch(`https://san-jose.onrender.com/api/estadisticas/${cedula}`);
     const top = await res.json();
     const lista = document.getElementById('topAtenciones');
     top.forEach((entry, index) => {
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // DETALLE PERSONAL
   try {
-    const detalleRes = await fetch(`http://localhost:3001/api/estadisticas/detalle/${cedula}`);
+    const detalleRes = await fetch(`https://san-jose.onrender.com/api/estadisticas/detalle/${cedula}`);
     const detalle = await detalleRes.json();
 
     const detalleDiv = document.getElementById('detalleUsuario');
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // DETALLE POR DÍA
 try {
-  const diarioRes = await fetch(`http://localhost:3001/api/estadisticas/detalle/diario/${cedula}`);
+  const diarioRes = await fetch(`https://san-jose.onrender.com/api/estadisticas/detalle/diario/${cedula}`);
   const dias = await diarioRes.json();
 
   const container = document.getElementById('estadisticasDiarias');
