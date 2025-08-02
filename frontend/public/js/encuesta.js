@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (!cedula || !rol) {
     alert("No ha iniciado sesión correctamente.");
-    window.location.href = "../index.html";
+    window.location.href = "../frontend/index.html ";
     return;
   }
 
   // Cargar usuarios filtrados por rol (excluyendo evaluadores)
   try {
-    const res = await fetch(`https://san-jose.onrender.com/api/usuarios/${rol}`);
+    const res = await fetch(`http://localhost:3001/api/usuarios/${rol}`);
     const usuarios = await res.json();
 
     // Opción por defecto
@@ -54,7 +54,7 @@ fecha: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString
     }
 
     try {
-      const res = await fetch('https://san-jose.onrender.com/api/encuestas', {
+      const res = await fetch('http://localhost:3001/api/encuestas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)

@@ -3,14 +3,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   const cedula = sessionStorage.getItem('cedula');
   document.getElementById('nombreUsuario').textContent = nombre;
 
-  // TOP 3
+  // 🔽 Mostrar u ocultar filtros según el tipo
+  const tipoFiltro = document.getElementById('tipoFiltro');
+  const filtroUnico = document.getElementById('filtroFechaUnica');
+  const filtroRango = document.getElementById('filtroRangoFechas');
+
+  tipoFiltro.addEventListener('change', () => {
+    if (tipoFiltro.value === 'fecha') {
+      filtroUnico.style.display = 'block';
+      filtroRango.style.display = 'none';
+    } else {
+      filtroUnico.style.display = 'none';
+      filtroRango.style.display = 'block';
+    }
+  });
+
+  // 🔽 Top 3
   try {
-    const res = await fetch(`https://san-jose.onrender.com/api/estadisticas/${cedula}`);
+    const res = await fetch(`http://localhost:3001/api/estadisticas/${cedula}`);
     const top = await res.json();
-
     const contenedor = document.getElementById('topAtenciones1');
-    contenedor.innerHTML = ''; // Limpiar antes de insertar
-
+    contenedor.innerHTML = '';
     top.forEach((entry, index) => {
       const p = document.createElement('p');
       p.innerHTML = `<strong>${index + 1}. ${entry.nombre}</strong> - Promedio: ${entry.promedio}`;
@@ -19,7 +32,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const radarContainer = document.getElementById('topAtenciones');
     radarContainer.innerHTML = '<canvas id="graficoTop3Radar"></canvas>';
-
     const radarCtx = document.getElementById('graficoTop3Radar').getContext('2d');
 
     const colores = [
@@ -30,11 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const datasets = top.map((entry, index) => ({
       label: `${entry.nombre}`,
-      data: [
-        entry.promedio_puntualidad || 0,
-        entry.promedio_trato || 0,
-        entry.promedio_resolucion || 0
-      ],
+      data: [entry.promedio_puntualidad || 0, entry.promedio_trato || 0, entry.promedio_resolucion || 0],
       fill: true,
       backgroundColor: colores[index].fondo,
       borderColor: colores[index].borde,
@@ -48,143 +56,53 @@ document.addEventListener('DOMContentLoaded', async () => {
       type: 'radar',
       data: {
         labels: ['Puntualidad', 'Trato', 'Resolución'],
-        datasets: datasets
+        datasets
       },
       options: {
-        elements: {
-          line: { borderWidth: 1 }
-        },
+        elements: { line: { borderWidth: 1 } },
         plugins: {
-          title: {
-            display: true,
-            text: 'Top 3 Mejores Calificados'
-          },
-          legend: {
-            position: 'top'
-          }
+          title: { display: true, text: 'Top 3 Mejores Calificados' },
+          legend: { position: 'top' }
         },
         scales: {
           r: {
             min: 0,
             max: 5,
             stepSize: 1,
-            angleLines: {
-              color: 'rgba(0, 0, 0, 0.6)',
-              lineWidth: 1.5
-            },
-            grid: {
-              color: 'rgba(0, 0, 0, 0.3)',
-              lineWidth: 1.2
-            },
-            pointLabels: {
-              color: '#000',
-              font: {
-                size: 14,
-                weight: 'bold'
-              }
-            },
-            ticks: {
-              color: '#000',
-              backdropColor: 'transparent',
-              font: {
-                size: 12
-              }
-            }
+            angleLines: { color: 'rgba(0,0,0,0.6)', lineWidth: 1.5 },
+            grid: { color: 'rgba(0,0,0,0.3)', lineWidth: 1.2 },
+            pointLabels: { color: '#000', font: { size: 14, weight: 'bold' } },
+            ticks: { color: '#000', backdropColor: 'transparent', font: { size: 12 } }
           }
         }
       }
     });
-    // new Chart(radarCtx, {
-    //   type: 'radar',
-    //   data: {
-    //     labels: ['Puntualidad', 'Trato', 'Resolución'],
-    //     datasets: datasets
-    //   },
-    //   options: {
-    //     scales:{r:{min:0, max:5}},
-    //     elements: {
-    //       line: { borderWidth: 1 }
-    //     },
-    //     plugins: {
-    //       title: {
-    //         display: true,
-    //         text: 'Top 3 Mejores Calificados'
-    //       },
-    //       legend: {
-    //         position: 'top'
-    //       }
-    //     }
-    //   },
-    //     scales: {
-    //       r: {
-    //         angleLines: {
-    //           color: 'rgba(0, 0, 0, 0.6)', // Líneas desde el centro (puedes usar 'black' o '#000')
-    //           lineWidth: 1.5
-    //         },
-    //         grid: {
-    //           color: 'rgba(0, 0, 0, 0.3)', // Líneas circulares (puedes aumentar opacidad)
-    //           lineWidth: 1.2
-    //         },
-    //         pointLabels: {
-    //           color: '#000', // Letras de 'Puntualidad', 'Trato', etc.
-    //           font: {
-    //             size: 14,
-    //             weight: 'bold'
-    //           }
-    //         },
-    //         ticks: {
-    //           color: '#000', // Números de las escalas (1, 2, 3, ...)
-    //           backdropColor: 'transparent',
-    //           font: {
-    //             size: 12
-    //           },
-    //           stepSize: 1
-    //         }
-    //       }
-    //     }
-    // });
   } catch (err) {
     console.error(err);
     alert("Error al obtener estadísticas TOP.");
   }
 
-  // DETALLE GENERAL + GRÁFICO DE DONA
+  // 🔽 Estadísticas generales (dona)
   try {
-    const detalleRes = await fetch(`https://san-jose.onrender.com/api/estadisticas/detalle/${cedula}`);
-    const detalle = await detalleRes.json();
+    const res = await fetch(`http://localhost:3001/api/estadisticas/detalle/${cedula}`);
+    const detalle = await res.json();
 
-    const detalleDiv = document.getElementById('detalleUsuario');
-    detalleDiv.innerHTML = `
+    document.getElementById('detalleUsuario').innerHTML = `
       <p><strong>Promedio de Puntualidad:</strong> ${detalle.promedio_puntualidad ?? 'N/A'}</p>
       <p><strong>Promedio de Trato:</strong> ${detalle.promedio_trato ?? 'N/A'}</p>
       <p><strong>Promedio de Resolución:</strong> ${detalle.promedio_resolucion ?? 'N/A'}</p>
     `;
 
-    const ctxGeneral = document.getElementById('graficoGeneral').getContext('2d');
-    new Chart(ctxGeneral, {
+    const ctx = document.getElementById('graficoGeneral').getContext('2d');
+    new Chart(ctx, {
       type: 'doughnut',
       data: {
         labels: ['Puntualidad', 'Trato', 'Resolución'],
         datasets: [{
           label: 'Promedio',
-          data: [
-            detalle.promedio_puntualidad || 0,
-            detalle.promedio_trato || 0,
-            detalle.promedio_resolucion || 0
-          ],
+          data: [detalle.promedio_puntualidad || 0, detalle.promedio_trato || 0, detalle.promedio_resolucion || 0],
           backgroundColor: ['blue', 'green', 'orange']
         }]
-      },
-      options: {
-        animations: {
-          tension: {
-            duration: 5000,
-            easing: 'easeInSine',
-            from: 1.5,
-            to: 0,
-            loop: true
-          }
-        }
       }
     });
   } catch (err) {
@@ -192,29 +110,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     alert("Error al obtener estadísticas generales.");
   }
 
-  // DETALLE DIARIO + GRÁFICO DE RADAR
-  function obtenerFechaActual() {
-    const hoy = new Date();
-    return hoy.toISOString().slice(0, 10); // yyyy-mm-dd
-  }
-
   let graficoPastel = null;
 
-  function mostrarDatosYGrafico(filtrado, fechaMostrada) {
+  function mostrarDatosYGrafico(filtrado, titulo = 'Promedios') {
     const container = document.getElementById('estadisticasDiarias');
     container.innerHTML = `
-    <strong>${fechaMostrada}:</strong>
-    Puntualidad: ${filtrado.promedio_puntualidad} |
-    Trato: ${filtrado.promedio_trato} |
-    Resolución: ${filtrado.promedio_resolucion}
-  `;
+      <strong>${titulo}:</strong>
+      Puntualidad: ${filtrado.promedio_puntualidad} |
+      Trato: ${filtrado.promedio_trato} |
+      Resolución: ${filtrado.promedio_resolucion}
+    `;
 
     const canvas = document.getElementById('graficoPastel');
     canvas.style.display = 'block';
 
     if (graficoPastel) {
       graficoPastel.destroy();
-      graficoPastel = null;
     }
 
     const ctx = canvas.getContext('2d');
@@ -223,16 +134,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       data: {
         labels: ['Puntualidad', 'Trato', 'Resolución'],
         datasets: [{
-          label: 'Promedio diario',
+          label: 'Promedio',
           data: [
             filtrado.promedio_puntualidad || 0,
             filtrado.promedio_trato || 0,
             filtrado.promedio_resolucion || 0
           ],
           backgroundColor: [
-            'rgba(255, 99, 132, 0.1)',
+            'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.3)'
+            'rgba(255, 206, 86, 0.2)'
           ],
           borderColor: [
             'rgb(255, 99, 132)',
@@ -244,78 +155,68 @@ document.addEventListener('DOMContentLoaded', async () => {
       },
       options: {
         scales: {
-          r: {
-            suggestedMin: 0,
-            suggestedMax: 5
-          }
+          r: { suggestedMin: 0, suggestedMax: 5 }
         }
       }
     });
   }
 
-  async function mostrarEstadisticaPorFecha(fechaSeleccionada) {
-    if (!fechaSeleccionada) return;
+  async function mostrarEstadisticaPorFecha(fecha) {
+  try {
+    const res = await fetch(`http://localhost:3001/api/estadisticas/detalle/diario/${cedula}`);
+    const dias = await res.json();
 
-    try {
-      const res = await fetch(`https://san-jose.onrender.com/api/estadisticas/detalle/diario/${cedula}`);
-      const dias = await res.json();
+    const fechaFormateada = new Date(fecha).toISOString().slice(0, 10);
 
-      const filtrado = dias.find(d => d.fecha.slice(0, 10) === fechaSeleccionada);
+    const dato = dias.find(d => {
+      const fechaDia = new Date(d.fecha).toISOString().slice(0, 10);
+      return fechaDia === fechaFormateada;
+    });
 
-      const container = document.getElementById('estadisticasDiarias');
-      const canvas = document.getElementById('graficoPastel');
-      container.innerHTML = '';
-
-      if (filtrado) {
-        mostrarDatosYGrafico(filtrado, fechaSeleccionada);
-      } else {
-        container.innerHTML = `<p>No hay datos para esta fecha.</p>`;
-        if (graficoPastel) {
-          graficoPastel.destroy();
-          graficoPastel = null;
-        }
-        canvas.style.display = 'none';
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error al obtener estadísticas filtradas.");
+    if (dato) {
+      mostrarDatosYGrafico(dato, fechaFormateada);
+    } else {
+      document.getElementById('estadisticasDiarias').innerHTML = '<p>No hay datos para esta fecha.</p>';
+      document.getElementById('graficoPastel').style.display = 'none';
+      if (graficoPastel) graficoPastel.destroy();
     }
+  } catch (err) {
+    console.error(err);
+    alert('Error al filtrar por fecha.');
   }
+}
 
-  window.addEventListener('DOMContentLoaded', async () => {
-    const hoy = obtenerFechaActual();
-    const fechaInput = document.getElementById('fechaFiltro');
-    fechaInput.value = hoy;
 
-    try {
-      const res = await fetch(`https://san-jose.onrender.com/api/estadisticas/detalle/diario/${cedula}`);
-      const dias = await res.json();
 
-      // Intenta encontrar datos para hoy
-      const deHoy = dias.find(d => new Date(d.fecha).toISOString().slice(0, 10) === hoy);
+  // 🔽 Botón FILTRAR
+  document.getElementById('filtrarBtn').addEventListener('click', async () => {
+    if (tipoFiltro.value === 'fecha') {
+      const fecha = document.getElementById('fechaFiltro').value;
+      if (!fecha) return alert('Selecciona una fecha');
+      mostrarEstadisticaPorFecha(fecha);
+    } else {
+      const desde = document.getElementById('fechaInicoo').value;
+      const hasta = document.getElementById('fechaFin').value;
+      if (!desde || !hasta) return alert('Selecciona ambas fechas');
 
-      if (deHoy) {
-        mostrarDatosYGrafico(deHoy, hoy);
-      } else if (dias.length > 0) {
-        // Si hoy no hay datos, toma el más reciente
-        const masReciente = dias[0]; // porque el backend devuelve ORDER BY fecha DESC
-        const fechaReciente = new Date(masReciente.fecha).toISOString().slice(0, 10);
-        fechaInput.value = fechaReciente;
-        mostrarDatosYGrafico(masReciente, fechaReciente);
-      } else {
-        document.getElementById('estadisticasDiarias').innerHTML = `<p>No hay datos disponibles.</p>`;
+      try {
+        const res = await fetch(`http://localhost:3001/api/estadisticas/detalle/promedio/${cedula}?desde=${desde}&hasta=${hasta}`);
+        const data = await res.json();
+
+        if (!data || (!data.promedio_puntualidad && !data.promedio_trato && !data.promedio_resolucion)) {
+          document.getElementById('estadisticasDiarias').innerHTML = '<p>No hay datos para este rango.</p>';
+          document.getElementById('graficoPastel').style.display = 'none';
+          if (graficoPastel) graficoPastel.destroy();
+        } else {
+          mostrarDatosYGrafico(data, `Promedio del ${desde} al ${hasta}`);
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Error al filtrar por rango de fechas.');
       }
-    } catch (err) {
-      console.error(err);
-      alert("Error al cargar estadísticas iniciales.");
     }
   });
 
-
-  document.getElementById('filtrarBtn').addEventListener('click', () => {
-    const fecha = document.getElementById('fechaFiltro').value;
-    mostrarEstadisticaPorFecha(fecha);
-  });
+  // 🔽 Valor por defecto (hoy)
+  document.getElementById('fechaFiltro').value = new Date().toISOString().slice(0, 10);
 });
-
-

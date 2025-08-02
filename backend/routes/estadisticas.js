@@ -3,25 +3,7 @@ import db from '../db.js';
 
 const router = express.Router();
 
-// router.get('/detalle/:cedula', async (req, res) => {
-//   const { cedula } = req.params;
-//   try {
-//     const sql = `
-//       SELECT 
-//         ROUND(AVG(puntualidad), 2) AS promedio_puntualidad,
-//         ROUND(AVG(trato), 2) AS promedio_trato,
-//         ROUND(AVG(resolucion), 2) AS promedio_resolucion
-//       FROM calificaciones
-//       WHERE atendido_por = ?
-//         AND HOUR(fecha) < 14 OR (HOUR(fecha) = 14 AND MINUTE(fecha) <= 30)
-//     `;
-//     const [rows] = await db.query(sql, [cedula]);
-//     res.json(rows[0]);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: 'Error al obtener estadísticas detalladas' });
-//   }
-// });
+// Estadísticas detalladas por cédula
 router.get('/detalle/:cedula', async (req, res) => {
   const { cedula } = req.params;
   try {
@@ -43,7 +25,7 @@ router.get('/detalle/:cedula', async (req, res) => {
 });
 
 
-// 
+// Estadísticas generales
 router.get('/:cedula', async (req, res) => {
   try {
     const sql = `
@@ -69,31 +51,7 @@ router.get('/:cedula', async (req, res) => {
 });
 
 
-// router.get('/detalle/diario/:cedula', async (req, res) => {
-//   const { cedula } = req.params;
-//   try {
-//     const sql = `
-//       SELECT 
-//         DATE(fecha) AS fecha,
-//         ROUND(AVG(puntualidad), 2) AS promedio_puntualidad,
-//         ROUND(AVG(trato), 2) AS promedio_trato,
-//         ROUND(AVG(resolucion), 2) AS promedio_resolucion
-//       FROM calificaciones
-//       WHERE atendido_por = ?
-//         AND (
-//           HOUR(fecha) < 14 OR (HOUR(fecha) = 14 AND MINUTE(fecha) <= 30)
-//         )
-//       GROUP BY DATE(fecha)
-//       ORDER BY fecha DESC
-//       LIMIT 7;
-//     `;
-//     const [rows] = await db.query(sql, [cedula]);
-//     res.json(rows);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: 'Error al obtener estadísticas por día' });
-//   }
-// });
+// Estadísticas por día
 router.get('/detalle/diario/:cedula', async (req, res) => {
   const { cedula } = req.params;
   try {
@@ -107,9 +65,8 @@ router.get('/detalle/diario/:cedula', async (req, res) => {
       WHERE atendido_por = ?
         AND TIME(fecha) BETWEEN '07:00:00' AND '14:30:00'
       GROUP BY DATE(fecha)
-      ORDER BY fecha DESC
-      LIMIT 7;
-    `;
+      ORDER BY fecha DESC;
+      `;
     const [rows] = await db.query(sql, [cedula]);
     res.json(rows);
   } catch (err) {
@@ -118,6 +75,64 @@ router.get('/detalle/diario/:cedula', async (req, res) => {
   }
 });
 
+// Filtrado de estadísticas por fecha de inicio y fin tenerla por si acaso
+router.get('/detalle/diario/:cedula/filtrado', async (req, res) => {
+  const { cedula } = req.params;
+  const { desde, hasta } = req.query;
 
+  if (!desde || !hasta) {
+    return res.status(400).json({ message: 'Fechas desde y hasta son requeridas' });
+  }
+
+  try {
+    const sql = `
+      SELECT 
+        DATE(fecha) AS fecha,
+        ROUND(AVG(puntualidad), 2) AS promedio_puntualidad,
+        ROUND(AVG(trato), 2) AS promedio_trato,
+        ROUND(AVG(resolucion), 2) AS promedio_resolucion
+      FROM calificaciones
+      WHERE atendido_por = ?
+        AND DATE(fecha) BETWEEN ? AND ?
+        AND TIME(fecha) BETWEEN '07:00:00' AND '14:30:00'
+      GROUP BY DATE(fecha)
+      ORDER BY fecha DESC;
+    `;
+    const [rows] = await db.query(sql, [cedula, desde, hasta]);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error al filtrar por fechas' });
+  }
+});
+
+
+// Promedio general de un rango de fechas (para gráfico resumen)
+router.get('/detalle/promedio/:cedula', async (req, res) => {
+  const { cedula } = req.params;
+  const { desde, hasta } = req.query;
+
+  if (!desde || !hasta) {
+    return res.status(400).json({ message: 'Fechas desde y hasta son requeridas' });
+  }
+
+  try {
+    const sql = `
+      SELECT 
+        ROUND(AVG(puntualidad), 2) AS promedio_puntualidad,
+        ROUND(AVG(trato), 2) AS promedio_trato,
+        ROUND(AVG(resolucion), 2) AS promedio_resolucion
+      FROM calificaciones
+      WHERE atendido_por = ?
+        AND DATE(fecha) BETWEEN ? AND ?
+        AND TIME(fecha) BETWEEN '07:00:00' AND '14:30:00'
+    `;
+    const [rows] = await db.query(sql, [cedula, desde, hasta]);
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error al obtener promedio del rango' });
+  }
+});
 
 export default router;
