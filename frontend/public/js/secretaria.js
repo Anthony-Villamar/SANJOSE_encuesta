@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 🔽 Top 3
   try {
-    const res = await fetch(`http://localhost:3001/api/estadisticas/${cedula}`);
+    const res = await fetch(`https://san-jose.onrender.com/api/estadisticas/${cedula}`);
     const top = await res.json();
     const contenedor = document.getElementById('topAtenciones1');
     contenedor.innerHTML = '';
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 🔽 Estadísticas generales (dona)
   try {
-    const res = await fetch(`http://localhost:3001/api/estadisticas/detalle/${cedula}`);
+    const res = await fetch(`https://san-jose.onrender.com/api/estadisticas/detalle/${cedula}`);
     const detalle = await res.json();
 
     document.getElementById('detalleUsuario').innerHTML = `
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function mostrarEstadisticaPorFecha(fecha) {
   try {
-    const res = await fetch(`http://localhost:3001/api/estadisticas/detalle/diario/${cedula}`);
+    const res = await fetch(`https://san-jose.onrender.com/api/estadisticas/detalle/diario/${cedula}`);
     const dias = await res.json();
 
     const fechaFormateada = new Date(fecha).toISOString().slice(0, 10);
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!desde || !hasta) return alert('Selecciona ambas fechas');
 
       try {
-        const res = await fetch(`http://localhost:3001/api/estadisticas/detalle/promedio/${cedula}?desde=${desde}&hasta=${hasta}`);
+        const res = await fetch(`https://san-jose.onrender.com/api/estadisticas/detalle/promedio/${cedula}?desde=${desde}&hasta=${hasta}`);
         const data = await res.json();
 
         if (!data || (!data.promedio_puntualidad && !data.promedio_trato && !data.promedio_resolucion)) {
